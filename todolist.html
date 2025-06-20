@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>할 일 리스트</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .todo-container {
+      width: 400px;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .todo-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .todo-header h2 {
+      margin: 0;
+      font-size: 1.4em;
+    }
+
+    .add-btn {
+      background-color: #3498db;
+      border: none;
+      color: white;
+      font-size: 1.2em;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+    }
+
+    .todo-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .todo-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+      background: #fafafa;
+    }
+
+    .todo-item input[type="text"] {
+      border: none;
+      background: transparent;
+      font-size: 1em;
+      width: 100%;
+      outline: none;
+    }
+
+    .delete-btn {
+      background: none;
+      border: none;
+      font-size: 1em;
+      color: #e74c3c;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+
+    .change-btn{
+        width: 130px;
+        height: 70px;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        border-radius: 20px;
+    }
+  </style>
+</head>
+<body>
+    <button class="change-btn" onclick="location.href='calendar.html'">캘린더</button>
+  <div class="todo-container">
+    <div class="todo-header">
+      <h2>할 일 리스트</h2>
+      <button class="add-btn" onclick="addTodo()">+</button>
+    </div>
+    <div class="todo-list" id="todoList">
+      <!-- 할 일 항목이 여기에 추가됨 -->
+    </div>
+  </div>
+
+  <script>
+    function addTodo() {
+      const list = document.getElementById("todoList");
+
+      const item = document.createElement("div");
+      item.className = "todo-item";
+
+      const input = document.createElement("input");
+      input.type = "text";
+      input.placeholder = "할 일을 입력하세요";
+
+      const delBtn = document.createElement("button");
+      delBtn.className = "delete-btn";
+      delBtn.innerHTML = "🗑";
+      delBtn.onclick = () => item.remove();
+
+      item.appendChild(input);
+      item.appendChild(delBtn);
+      list.appendChild(item);
+    }
+  </script>
+
+</body>
+</html>
