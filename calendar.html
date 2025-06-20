@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>calendar</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      padding: 30px;
+    }
+    .calendar {
+      width: 350px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    .calendar header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #333;
+      color: white;
+      padding: 15px;
+    }
+    .calendar header button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+    .calendar .month-year {
+      font-size: 1.2em;
+    }
+    .calendar .days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      padding: 10px;
+      text-align: center;
+    }
+    .calendar .day,
+    .calendar .date {
+      padding: 10px 0;
+    }
+    .calendar .day {
+      font-weight: bold;
+      background-color: #f0f0f0;
+    }
+    .calendar .date:hover {
+      background-color: #d0e8ff;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .today {
+        background-color: #ffdd88;
+        font-weight: bold;
+        border-radius: 5px;
+    }
+    .change-btn{
+        width: 130px;
+        height: 70px;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        border-radius: 20px;
+    }
+
+  </style>
+</head>
+<body>
+  <button class="change-btn" onclick="location.href='todolist.html'">할 일 리스트</button>
+<div class="calendar">
+  <header>
+    <button onclick="prevMonth()">◀</button>
+    <div class="month-year" id="monthYear"></div>
+    <button onclick="nextMonth()">▶</button>
+  </header>
+  <div class="days" id="calendarDays">
+    <!-- 요일 -->
+    <div class="day">일</div>
+    <div class="day">월</div>
+    <div class="day">화</div>
+    <div class="day">수</div>
+    <div class="day">목</div>
+    <div class="day">금</div>
+    <div class="day">토</div>
+    <!-- 날짜는 JS로 삽입 -->
+  </div>
+</div>
+
+<script>
+  const calendarDays = document.getElementById("calendarDays");
+  const monthYear = document.getElementById("monthYear");
+
+  let today = new Date();
+  let currentYear = today.getFullYear();
+  let currentMonth = today.getMonth(); // 0~11
+
+  function isLeapYear(year) {
+    return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+  }
+
+  function getLastDate(year, month) {
+    const monthLengths = [31, (isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31,
+                          31, 30, 31, 30, 31];
+    return monthLengths[month];
+  }
+
+  function renderCalendar(year, month) {
+    // 날짜 초기화
+    const firstDay = new Date(year, month, 1).getDay(); // 요일
+    const lastDate = getLastDate(year, month);
+
+    monthYear.textContent = `${year}년 ${month + 1}월`;
+
+    // 이전 날짜 제거
+    calendarDays.innerHTML = `
+      <div class="day">일</div>
+      <div class="day">월</div>
+      <div class="day">화</div>
+      <div class="day">수</div>
+      <div class="day">목</div>
+      <div class="day">금</div>
+      <div class="day">토</div>
+    `;
+
+    // 공백 채우기
+    for (let i = 0; i < firstDay; i++) {
+      const empty = document.createElement("div");
+      calendarDays.appendChild(empty);
+    }
+
+    for (let date = 1; date <= lastDate; date++) {
+        const day = document.createElement("div");
+        day.className = "date";
+        day.textContent = date;
+
+        // 오늘 날짜 하이라이트
+        if (year === today.getFullYear() && month === today.getMonth() && date === today.getDate()){
+    day.classList.add("today");
+  }
+
+  calendarDays.appendChild(day);
+}
+
+  }
+
+  function prevMonth() {
+    currentMonth--;
+    if (currentMonth < 0) {
+      currentMonth = 11;
+      currentYear--;
+    }
+    renderCalendar(currentYear, currentMonth);
+  }
+
+  function nextMonth() {
+    currentMonth++;
+    if (currentMonth > 11) {
+      currentMonth = 0;
+      currentYear++;
+    }
+    renderCalendar(currentYear, currentMonth);
+  }
+
+  renderCalendar(currentYear, currentMonth);
+
+</script>
+
+</body>
+</html>
